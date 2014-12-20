@@ -9,6 +9,7 @@ android {
         applicationId "com.olme"
         minSdkVersion 11
         targetSdkVersion 19
+
         versionCode 1
         versionName "1.0"
     }
