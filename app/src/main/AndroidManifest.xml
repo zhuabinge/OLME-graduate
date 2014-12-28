@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
 
     <application
+        android:name="com.olme.application.CustomApplication"
         android:allowBackup="true"
         android:icon="@drawable/desktop_icon"
         android:label="@string/app_name"
@@ -24,6 +25,97 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 注册 -->
+        <activity
+            android:name=".RegisterActivity_"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <!-- 登陆 -->
+        <activity
+            android:name=".LoginActivity_"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <!--  -->
+        <activity
+            android:name=".InitActivity_"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <!-- 个人中心 -->
+        <activity
+            android:name=".MyQuestionActivity_"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+        <activity
+            android:name=".PersonalInfoActivity_"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <!-- 退出登陆窗口 -->
+
+        <activity
+            android:name=".LogoutActivity_"
+            android:theme="@style/MyDialog"></activity>
+
+
+        <!-- 发布主题 -->
+        <activity
+            android:name=".AddThemeActivity_"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <!-- 修改个人资料 -->
+        <activity
+            android:name=".ModifyBirthdayActivity_"
+            android:theme="@style/MyDialog"></activity>
+        <activity
+            android:name=".ModifyHeadPhotoActivity_"
+            android:theme="@style/MyDialog"></activity>
+        <activity
+            android:name=".ModifyNameActivity_"
+            android:theme="@style/MyDialog"></activity>
+        <activity
+            android:name=".ModifySexActivity_"
+            android:theme="@style/MyDialog"></activity>
+        <activity
+            android:name=".ModifyAddressActivity_"
+            android:theme="@style/MyDialog"></activity>
+        <activity
+            android:name=".ModifyPhoneActivity_"
+            android:theme="@style/MyDialog"></activity>
+
+        <!-- 评论 -->
+        <activity
+            android:name=".ReplyActivity_"
+            android:theme="@style/MyDialog"></activity>
+
+        <!-- 评论详情 -->
+        <activity
+            android:name=".AnswerDetailActivity_"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+
+        <!-- 消息详情 -->
+        <activity
+            android:name=".MessageDetailActivity_"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <!-- 消息选择 -->
+        <activity
+            android:name=".SelectReplyActivity_"
+            android:theme="@style/MyDialog"></activity>
+
+        <!-- 课程详情 -->
+        <activity
+            android:name=".CourseInfoDetailActivity_"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <!-- 视频信息 -->
+        <activity
+            android:name=".VedioInfoActivity_"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+
+        <!-- 视频播放-->
+        <activity
+            android:name=".VedioPlayActivity"></activity>
     </application>
 
 </manifest>
