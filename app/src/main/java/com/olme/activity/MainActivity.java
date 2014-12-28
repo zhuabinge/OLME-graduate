@@ -7,6 +7,9 @@ import com.olme.application.ExitApplication;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends Activity {
@@ -15,14 +18,15 @@ public class MainActivity extends Activity {
     @AfterViews
     void init(){
         ExitApplication.getInstance().addActivity(this);
-        try {
-
-            Intent intent = new Intent(this, LoginActivity_.class);
-            Thread.sleep(10000);
-            startActivity(intent);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        final Intent intent = new Intent(this, LoginActivity_.class);
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                startActivity(intent);
+            }
+        };
+        timer.schedule(task, 1500);
     }
 
 }
