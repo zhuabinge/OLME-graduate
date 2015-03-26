@@ -3,7 +3,7 @@ package com.olme.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,19 +11,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.olme.R;
+import com.olme.domain.RestResult;
 import com.olme.popupWindow.MorePopWindow;
 import com.olme.api.UserApi;
 import com.olme.application.ExitApplication;
-import com.olme.domain.LoginUser;
+import com.olme.tool.MD5Util;
+import com.olme.tool.MyErrorHandler;
+import com.olme.tool.UIHelper;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.rest.RestService;
-import org.springframework.web.client.HttpStatusCodeException;
 
 /**
  * Created by Bingo on 2014/8/7.
@@ -46,19 +49,24 @@ public class RegisterActivity extends Activity {
     @RestService
     UserApi olmeApi;
 
-    private SharedPreferences.Editor sharedata;
+    @Bean
+    MyErrorHandler errorHandlerForUserService;
+
     private LayoutInflater inflater;
     private View views;
     private String username;
     private String password;
     private String surepassword;
     private Toast toast;
-    private String flag;
+    private RestResult userInfo = null;
+    private boolean registerResult = false;
 
     @AfterViews
     void init() {
+
+        //设置ErrorHandler
+        olmeApi.setRestErrorHandler(errorHandlerForUserService);
         ExitApplication.getInstance().addActivity(this);
-        sharedata = getSharedPreferences("userInfo", 0).edit();
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         views = inflater.inflate(    //获取自定义布局文件dialog.xml的视图
                 R.layout.activity_register, null, false);
@@ -71,36 +79,7 @@ public class RegisterActivity extends Activity {
         surepassword = etsPassword.getText().toString().trim();  //获取页面填的密码信息
         if (!"".equals(username) && !"".equals(password) && !"".equals(surepassword)) {
             if (password.equals(surepassword)) {
-               // register(username, password);
-
-
-//                while(this.flag == null){
-//                    try {
-//                        Thread.sleep(500);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-
-//                if (flag.equals("true")) {
-                    toast = Toast.makeText(RegisterActivity.this,
-                            "注册成功！", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity_.class);
-                startActivity(intent);
-//                } else {
-//                    toast = Toast.makeText(RegisterActivity.this, "该邮箱已被注册，请选择其他邮箱！", Toast.LENGTH_SHORT);
-//                    toast.setGravity(Gravity.CENTER, 0, 0);
-//                    toast.show();
-//                }
+               register();
             } else {
                 toast = Toast.makeText(RegisterActivity.this,
                         "两次输入的密码不一致，请重新输入！", Toast.LENGTH_SHORT);
@@ -113,35 +92,86 @@ public class RegisterActivity extends Activity {
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         }
-
-
     }
 
+    public void register() {
+        new AsyncTask<Void, Void, Boolean>() {
 
-    @Background
-    void register(String userEmail, String userPw) {
-        try {
-            Boolean user = olmeApi.regist(userEmail, userPw);
-            System.out.println(user);
-            flag = user.toString();
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                //显示加载进度对话框
+                UIHelper.showDialogForLoading(RegisterActivity.this, views);
+            }
 
-        } catch (HttpStatusCodeException e) {
-            showErroResult(e.getStatusCode().value());
-        }
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                try {
+                    Thread.sleep(2000);
+                    //在这里添加调用接口获取数据的代码
+                    //doSomething()
+
+                    //String userPw = MD5Util.MD5(password);
+                    String userPw = password;
+                    userInfo = olmeApi.tuserRegister(username, userPw); //验证登陆
+                    System.out.println("-------->" + userInfo.getCode());
+                    if (userInfo == null) {
+                        throw new Exception("无网络连接！");
+                    }
+                } catch (Exception e) {
+                    System.out.println("----->e.toString() " + e.toString());
+                    return false;
+                }
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean isSuccess) {
+                //关闭对话框
+                UIHelper.hideDialogForLoading();
+                if (isSuccess) {
+                    // 加载成功;
+                    int code = userInfo.getCode();
+                    if (code == 0) {
+                        toast = Toast.makeText(RegisterActivity.this,
+                                userInfo.getMsg(), Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                        registerResult = false;
+                    } else if (code == 1) {
+                        tip();
+                        registerResult = true;
+                    }
+                } else {
+                    // 加载失败
+                    toast = Toast.makeText(RegisterActivity.this,
+                            "无网络连接！", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                    registerResult = false;
+                }
+                if (registerResult) {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity_.class);
+                    startActivity(intent);
+                    RegisterActivity.this.finish();
+                }
+            }
+        }.execute();
     }
 
-    /**
-     * 展示http请求异常结果
-     *
-     * @param requestCode
-     */
     @UiThread
-    void showErroResult(int requestCode) {
-        if (requestCode == 404) {
-
-        } else {
-        }
+    void tip() {
+        toast = Toast.makeText(RegisterActivity.this,
+                "注册成功！", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
+
 
     @Click(R.id.returnbt)
     void returnbtIsClick() {

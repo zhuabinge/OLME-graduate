@@ -3,30 +3,28 @@ package com.olme.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.StrictMode;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.olme.R;
+import com.olme.application.CustomApplication;
+import com.olme.asyncTask.AsyncImageTask;
 import com.olme.popupWindow.MorePopWindow;
 import com.olme.application.ExitApplication;
-import com.olme.tool.AsyncLoadImage;
-import com.olme.tool.HttpUtil;
+import com.olme.tool.UrlUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.File;
 
 /**
  * Created by Bingo on 2014/8/10.
@@ -35,7 +33,7 @@ import java.net.URL;
 
 @EActivity(R.layout.activity_personalinfo)
 public class PersonalInfoActivity extends Activity {
-    //    ExitApplication.getInstance().addActivity(this);
+
     @ViewById(R.id.morebt)
     ImageView morebt;
 
@@ -48,78 +46,41 @@ public class PersonalInfoActivity extends Activity {
     @ViewById(R.id.infoName)
     TextView infoName;
 
-    @ViewById(R.id.infoBirthday)
-    TextView infoBirthday;
-
-    @ViewById(R.id.infoAddress)
-    TextView infoAddress;
-
     @ViewById(R.id.infoSex)
     TextView infoSex;
 
-    @ViewById(R.id.infoPhone)
-    TextView infoPhone;
-
-    @ViewById(R.id.infoEmail)
-    TextView infoEmail;
-
     private LayoutInflater inflater;
     private View views;
-    private String userPhoto;
-    private String userName;
-    private String userEmail;
-    private String userBirthday;
-    private String userAddress;
-    private String userSex;
-    private String userPhone;
+    private CustomApplication app;
+    private File cache;
 
     /**
      * 昵称的requestCode
      */
-    private static int REQUESTCODE_NAME = 1;
-    private static int REQUESTCODE_BIRTHDAY = 2;
-    private static int REQUESTCODE_ADDRESS = 3;
-    private static int REQUESTCODE_SEX = 4;
-    private static int REQUESTCODE_PHONE = 5;
-    private static int REQUESTCODE_HEADPHOTO = 6;
+    private static final int REQUESTCODE_NAME = 1;
+    private static final int REQUESTCODE_SEX = 2;
+    private static final int REQUESTCODE_HEADPHOTO = 3;
 
     @AfterViews
     void init() {
-        headTitle.setText("个人资料");
+        app = (CustomApplication) getApplication();
         ExitApplication.getInstance().addActivity(this);
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            //创建缓存目录，系统一运行就得创建缓存目录的，
+            cache = new File(Environment.getExternalStorageDirectory(), "cache");
+            if (!cache.exists()) {
+                cache.mkdirs();
+            }
+        }
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         views = inflater.inflate(    //获取自定义布局文件dialog.xml的视图
                 R.layout.activity_personalinfo, null, false);
-
-        SharedPreferences sp = sp = this.getSharedPreferences("userInfo", 0);
-        userName = sp.getString("userName", "");
-        userEmail = sp.getString("userEmail", "");
-        userAddress = sp.getString("userAddress", "");
-        userBirthday = sp.getString("userBirthday", "");
-        userPhone = sp.getString("userPhone", "");
-        userSex = sp.getString("userSex", "");
-        userPhoto=sp.getString("userPhoto","");
-
-//        InputStream stream = null;
-//        try {
-//            stream = HttpUtil.getInputStrem(userPhoto);
-////            byte[] bytes = HttpUtil.getByteArray(userPhoto);
-//            Bitmap bmp = BitmapFactory.decodeStream(stream);
-////            Bitmap bmp =  BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-//            infoHeadIcon.setImageBitmap(bmp);
-//        } catch (Exception e) {
-//            // TODO: handle exception
-//        }
-        //加载图片
-        AsyncLoadImage.loadImage(infoHeadIcon,userPhoto);
-
         //设置TextView显示用户属性
-        infoName.setText(this.userName);
-        infoEmail.setText(this.userEmail);
-        infoAddress.setText(userAddress);
-        infoPhone.setText(this.userPhone);
-        infoSex.setText(this.userSex);
-        infoBirthday.setText(this.userBirthday);
+        infoName.setText(app.getUserName());
+        infoSex.setText(app.getUserSex());
+        String path = UrlUtil.getUrl(app.getUserPhoto());
+        AsyncImageTask task = new AsyncImageTask(path, cache, infoHeadIcon);
+        task.execute();
     }
 
 
@@ -131,62 +92,43 @@ public class PersonalInfoActivity extends Activity {
         startActivityForResult(intent, PersonalInfoActivity.REQUESTCODE_HEADPHOTO);
     }
 
-    @Click(R.id.myName)
-    void myNameIsClicked() {
-        Intent intent = new Intent(this, ModifyNameActivity_.class);
-        startActivityForResult(intent, PersonalInfoActivity.REQUESTCODE_NAME);
-    }
-
-    @Click(R.id.myBirthday)
-    void myBirthdayIsClicked() {
-        Intent intent = new Intent(this, ModifyBirthdayActivity_.class);
-        startActivityForResult(intent, PersonalInfoActivity.REQUESTCODE_BIRTHDAY);
-    }
-
-    @Click(R.id.myAddress)
-    void myAddressIsClicked() {
-        Intent intent = new Intent(this, ModifyAddressActivity_.class);
-        intent.putExtra("oldAddress", userAddress);
-        startActivityForResult(intent, PersonalInfoActivity.REQUESTCODE_ADDRESS);
-    }
+//    @Click(R.id.myName)
+//    void myNameIsClicked() {
+//        Intent intent = new Intent(this, ModifyNameActivity_.class);
+//        startActivityForResult(intent, PersonalInfoActivity.REQUESTCODE_NAME);
+//    }
 
     @Click(R.id.mySex)
     void mySexIsClicked() {
         Intent intent = new Intent(this, ModifySexActivity_.class);
         startActivityForResult(intent, PersonalInfoActivity.REQUESTCODE_SEX);
-
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 9) {
-            String editTextValue = data.getStringExtra("editTextValue");
-            if (requestCode == REQUESTCODE_SEX) {
-                infoSex.setText(editTextValue);
-            } else if (requestCode == REQUESTCODE_NAME) {
-                infoName.setText(editTextValue);
-            } else if (requestCode == REQUESTCODE_ADDRESS) {
-                infoAddress.setText(editTextValue);
-            } else if (requestCode == REQUESTCODE_PHONE) {
-                infoPhone.setText(editTextValue);
-            } else if (requestCode == REQUESTCODE_BIRTHDAY) {
-                infoBirthday.setText(editTextValue);
-            }else if(requestCode == REQUESTCODE_HEADPHOTO){
-                //获取头像的bitmap对象
-                Bitmap bitmap=data.getParcelableExtra("headPhoto");
-                infoHeadIcon.setImageBitmap(bitmap);
-            }
-        }
+    @OnActivityResult(PersonalInfoActivity.REQUESTCODE_HEADPHOTO)
+    void setHeadPhoto(int resultCode, Intent data) {
+        //获取头像的bitmap对象
+        Bitmap bitmap=data.getParcelableExtra("userPhoto");
+        infoHeadIcon.setImageBitmap(bitmap);
     }
 
-    @Click(R.id.myPhone)
-    void myPhoneIsClicked() {
-        Intent intent = new Intent(this, ModifyPhoneActivity_.class);
-        startActivityForResult(intent, PersonalInfoActivity.REQUESTCODE_PHONE);
+//    @OnActivityResult(PersonalInfoActivity.REQUESTCODE_NAME)
+//    void setName(int resultCode, Intent data) {
+//        String userName = data.getStringExtra("userName");
+//        infoName.setText(userName);
+//    }
+
+    @OnActivityResult(PersonalInfoActivity.REQUESTCODE_SEX)
+    void setSex(int resultCode, Intent data) {
+        String userName = data.getStringExtra("userSex");
+        infoSex.setText(userName);
     }
 
+
+    @Click(R.id.myquestion)
+    void myQuestion() {
+        Intent intent = new Intent(this, MyQuestionActivity_.class);
+        startActivity(intent);
+    }
 
     @Click(R.id.returnbt)
         //返回前个页面

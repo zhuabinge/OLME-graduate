@@ -2,6 +2,7 @@ package com.olme.activity;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.olme.R;
 import com.olme.application.ExitApplication;
 
 import org.androidannotations.annotations.AfterViews;
@@ -24,6 +25,7 @@ public class MainActivity extends Activity {
             @Override
             public void run() {
                 startActivity(intent);
+                MainActivity.this.finish();
             }
         };
         timer.schedule(task, 1500);

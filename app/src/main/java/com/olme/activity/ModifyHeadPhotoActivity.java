@@ -3,7 +3,6 @@ package com.olme.activity;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -12,12 +11,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.olme.R;
 import com.olme.application.ExitApplication;
-import com.olme.tool.ResultIntent;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.FileNotFoundException;
@@ -30,12 +30,11 @@ import java.io.FileNotFoundException;
 public class ModifyHeadPhotoActivity extends Activity {
     @ViewById(R.id.modifyName)
     ImageView imageView;
-    /**
-     * 本地数据编辑器
-     */
-    private SharedPreferences.Editor sharedata;
+
+    private final int requestCode = 1;
     Bitmap bitmap;
     Bitmap oldBitmap;
+
     @AfterViews
     void init() {
         ExitApplication.getInstance().addActivity(this);
@@ -62,20 +61,19 @@ public class ModifyHeadPhotoActivity extends Activity {
 			               /* 使用Intent.ACTION_GET_CONTENT这个Action */
         intent.setAction(Intent.ACTION_GET_CONTENT);
 			               /* 取得相片后返回本画面 */
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, requestCode);
     }
 
     /**
      * 选择图片返回处理
-     * @param requestCode
      * @param resultCode
      * @param data
      */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @OnActivityResult(requestCode)
+    void onActivityResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             Uri uri = data.getData();
-            Log.e("uri", uri.toString());
+            //Log.e("uri", uri.toString());
             ContentResolver cr = this.getContentResolver();
             try {
                  this.bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
@@ -85,7 +83,6 @@ public class ModifyHeadPhotoActivity extends Activity {
                 Log.e("Exception", e.getMessage(),e);
             }
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
@@ -93,14 +90,9 @@ public class ModifyHeadPhotoActivity extends Activity {
      */
     @Click(R.id.photoSave)
     void saveHeadPhoto(){
-        if(this.bitmap!=null){
-            //TODO 将头像上传到数据库
-            //将bitmap作结果返回
-            ResultIntent.resultIntent(this, this.bitmap);
-        }
-        else{
-            ResultIntent.resultIntent(this, this.oldBitmap);
-        }
+
+        //上传到服务器
+
         this.finish();//必须手动finish
     }
 }

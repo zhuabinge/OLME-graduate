@@ -1,34 +1,34 @@
 package com.olme.api;
 
-import com.olme.domain.AllAnswer;
-import com.olme.domain.AllQuestion;
-import com.olme.domain.MyQuestion;
-import com.olme.domain.QuestionPhoto;
+import com.olme.domain.RestResult;
+import com.olme.tool.UrlUtil;
 
 import org.androidannotations.annotations.rest.Get;
 import org.androidannotations.annotations.rest.Rest;
+import org.androidannotations.api.rest.RestClientErrorHandling;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 
-import java.util.List;
 
 /**
  * Created by wzy on 2014/8/16.
  */
-@Rest(rootUrl="http://10.0.2.2:8080/olme/communication/",converters = GsonHttpMessageConverter.class)
-public interface CommunicationApi {
+//@Rest(rootUrl="http://10.0.2.2:8080/olme/communication/",converters = GsonHttpMessageConverter.class)
 
-    @Get("findmyquestion/{userId}/{page}")
-    List<MyQuestion> getMyQuestions(Integer userId, Integer page);
+@Rest(rootUrl = UrlUtil.root, converters = GsonHttpMessageConverter.class)
+public interface CommunicationApi extends RestClientErrorHandling {
 
-    @Get("findallquestions/{page}")
-    List<AllQuestion> getAllQuestions(Integer page);
+    @Get("communication/addCommunication?userId={userId}&&questionTheme={questionTheme}&&comContent={comContent}&&isAppLogin={isAppLogin}")
+    RestResult addCommunication(Integer userId, String questionTheme, String comContent, String isAppLogin);
 
-    @Get("findallanswers/{comId}/{page}")
-    List<AllAnswer> getAllAnswers(Integer comId, Integer page);
+    @Get("communication/getAllCommunication?questionId={questionId}&&type={type}&&isAppLogin={isAppLogin}")
+    RestResult getAllCommunication(Integer questionId, Integer type, String isAppLogin);  //List<AllQuestion>
 
-    @Get("picture/{comId}")
-    List<QuestionPhoto> getQuestionPhotos(Integer comId);
+    @Get("communication/getUserCommunication?userId={userId}&&questionId={questionId}&&isAppLogin={isAppLogin}")
+    RestResult getUserCommunication(Integer userId, Integer questionId, String isAppLogin);
 
-    @Get("comment/add/{answerId}/{replyerId}/{comId}/{content}")
-    Boolean addComment(Integer answerId, Integer replyerId, Integer comId, String content);
+    @Get("tcomment/findCommentByQuestionId?questionId={questionId}&&commentId={commentId}&&type={type}&&isAppLogin={isAppLogin}")
+    RestResult findCommentByQuestionId(Integer questionId, Integer commentId, Integer type, String isAppLogin);   //List<AllAnswerResult>
+
+    @Get("tcomment/addComment?userId={userId}&&questionId={questionId}&&comContent={comContent}&&isAppLogin={isAppLogin}")
+    RestResult addComment(Integer userId, Integer questionId, String comContent, String isAppLogin);
 }

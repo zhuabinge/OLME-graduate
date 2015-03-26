@@ -50,7 +50,7 @@
                         android:id="@+id/tv_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="邮    箱:"
+                        android:text="用户名:"
                         android:textSize="18dp" />
 
                     <EditText
@@ -59,7 +59,7 @@
                         android:layout_height="45dp"
                         android:layout_marginLeft="10dp"
                         android:background="@null"
-                        android:hint="请输入邮箱"
+                        android:hint="请输入用户名："
                         android:inputType="textEmailAddress"
                         android:maxLines="1" />
                 </LinearLayout>

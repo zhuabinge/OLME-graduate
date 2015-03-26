@@ -54,27 +54,8 @@
                         android:id="@+id/courseInfoDetailName"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="java软件工程师"
                         android:textSize="18dp"
                         android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="5dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="教师：" />
-
-                        <TextView
-                            android:id="@+id/courseInfoDetailTeacherName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="12" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="fill_parent"
@@ -91,7 +72,7 @@
                             android:id="@+id/courseInfoDetailTotalNum"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="12" />
+                            android:text="0" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -105,8 +86,7 @@
                 android:id="@+id/courseInfoDetailDescription"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="121331313131313" />
+                android:layout_marginTop="10dp"/>
 
             <LinearLayout
                 android:layout_width="fill_parent"

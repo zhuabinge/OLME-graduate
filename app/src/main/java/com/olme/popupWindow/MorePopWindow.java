@@ -14,7 +14,7 @@ import android.widget.PopupWindow;
 import android.widget.SimpleAdapter;
 
 import com.olme.activity.LogoutActivity_;
-import com.olme.activity.R;
+import com.olme.R;
 import com.olme.application.CustomApplication;
 import com.olme.dataSource.popupDataSource_1;
 
@@ -60,7 +60,8 @@ public class MorePopWindow extends PopupWindow {
 //                            context.startActivity(intent);
 //                        }
                         break;
-                    case 1:
+                    case 1:break;
+                    case 2:
                         dismiss();
                         Intent intent = new Intent(context, LogoutActivity_.class);
                         context.startActivity(intent);
@@ -106,26 +107,4 @@ public class MorePopWindow extends PopupWindow {
             this.dismiss();
         }
     }
-
-//    public void showTips(Activity context){
-//        AlertDialog alertDialog = new AlertDialog.Builder(context).setTitle("提醒")
-//                .setMessage("是否退出程序")
-//                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-////                        final  ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-////                        am.restartPackage(getPackageName());
-////                        android.os.Process.killProcess(android.os.Process.myPid());
-//                        ExitApplication.getInstance().exit();
-//                    }
-//
-//                }).setNegativeButton("取消",
-//
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                return;
-//                            }
-//                        }
-//                ).create(); // 创建对话框
-//        alertDialog.show(); // 显示对话框
-//    }
 }

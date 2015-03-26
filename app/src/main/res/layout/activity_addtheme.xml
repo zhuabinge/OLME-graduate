@@ -64,52 +64,9 @@
                 <EditText
                     android:id="@+id/themeContent"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="15dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/corners_bg1"
-                    android:orientation="horizontal"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="5dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="15dp">
-
-                        <Button
-                            android:id="@+id/addThemePhoto"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:background="@drawable/ofm_addphoto_icon" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <Button
-                            android:id="@+id/checkThemePhoto"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:background="@drawable/ofm_del_icon"
-                            android:gravity="top"
-                            android:visibility="gone" />
-                    </LinearLayout>
-                </LinearLayout>
+                    android:inputType="textMultiLine"
+                    android:lines="5"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

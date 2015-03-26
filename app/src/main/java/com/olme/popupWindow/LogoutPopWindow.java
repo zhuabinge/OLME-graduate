@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
-import com.olme.activity.R;
+import com.olme.R;
 import com.olme.application.ExitApplication;
 
 /**

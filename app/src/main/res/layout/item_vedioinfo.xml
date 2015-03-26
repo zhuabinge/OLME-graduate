@@ -23,7 +23,6 @@
                 android:id="@+id/vedioInfoName"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="数据库管理系统概述"
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
@@ -42,7 +41,7 @@
                     android:id="@+id/vedioInfoVedioLength"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="11" />
+                    android:text="0" />
 
                 <TextView
                     android:layout_width="wrap_content"

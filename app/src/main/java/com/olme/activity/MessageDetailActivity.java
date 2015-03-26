@@ -2,7 +2,6 @@ package com.olme.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +13,9 @@ import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.olme.R;
 import com.olme.popupWindow.MorePopWindow;
 import com.olme.application.ExitApplication;
-import com.olme.asyncTask.AnswerGetDataTask;
 import com.olme.dataSource.AnswerData;
 
 import org.androidannotations.annotations.AfterViews;
@@ -55,7 +54,7 @@ public class MessageDetailActivity extends Activity {
         views = inflater.inflate(    //获取自定义布局文件dialog.xml的视图
                 R.layout.activity_messagedetail, null, false);
         headTitle.setText("我的消息");
-        list = data.getMyAllDataSource();
+        //list = data.getMyAllDataSource();
         pullToRefreshListView = (PullToRefreshListView) this.findViewById(R.id.messageDetailList);  //下拉刷新
         pullToRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
@@ -67,7 +66,7 @@ public class MessageDetailActivity extends Activity {
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
 
                 // Do work to refresh the list here.
-                new AnswerGetDataTask(list, pullToRefreshListView, adapter,false).execute();
+                //new AnswerGetDataTask(list, pullToRefreshListView, adapter,false).execute();
             }
         });
 
@@ -82,8 +81,8 @@ public class MessageDetailActivity extends Activity {
         pullToRefreshListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(view.getContext(), SelectReplyActivity_.class);
-                startActivity(intent);
+                //Intent intent = new Intent(view.getContext(), SelectReplyActivity_.class);
+                //startActivity(intent);
             }
         });
     }

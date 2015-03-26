@@ -2,7 +2,9 @@ package com.olme.application;
 
 import android.app.Activity;
 import android.app.Application;
+import android.os.Environment;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,6 +51,12 @@ public class ExitApplication extends Application {
             for (Activity activity : activitys) {
                 activity.finish();
             }
+        }
+        File cache = new File(Environment.getExternalStorageDirectory(), "cache");
+        //清空缓存
+        File[] files = cache.listFiles();
+        for(File file :files){
+            file.delete();
         }
         System.exit(0);
     }

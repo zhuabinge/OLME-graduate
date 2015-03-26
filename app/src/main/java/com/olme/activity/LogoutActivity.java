@@ -1,16 +1,13 @@
 package com.olme.activity;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.olme.activity.R;
+import com.olme.R;
 import com.olme.application.CustomApplication;
 import com.olme.application.ExitApplication;
 
@@ -23,45 +20,6 @@ import org.androidannotations.annotations.ViewById;
  * Created by Bingo on 2014/8/13.
  * 退出界面
  */
-
-//public class LogoutDialog extends Dialog {
-//
-//    private Context context;
-//
-//    public LogoutDialog(Context context) {
-//        super(context);
-//        this.context = context;
-//    }
-//
-//    public LogoutDialog(Context context, int theme) {
-//        super(context, theme);
-//        this.context = context;
-//    }
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        this.setContentView(R.layout.activity_logout_dialog);
-//        LinearLayout closeApp = (LinearLayout) this.findViewById(R.id.closeApp);
-//        LinearLayout logoff = (LinearLayout) this.findViewById(R.id.logoff);
-//
-//        closeApp.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ExitApplication.getInstance().exit();
-//            }
-//        });
-//
-//        logoff.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                System.out.println("注销");
-//            }
-//        });
-//
-//        this.setCanceledOnTouchOutside(true);
-//    }
-//}
 
 @EActivity(R.layout.activity_logout_dialog)
 public class LogoutActivity extends Activity {
@@ -82,6 +40,7 @@ public class LogoutActivity extends Activity {
         app = (CustomApplication) getApplication();
         app.setValue("logout");
         Intent intent = new Intent(this,LoginActivity_.class);
+        intent.putExtra("logout", 1);
         startActivity(intent);
     }
 

@@ -2,16 +2,10 @@ package com.olme.onPageChangeListener;
 
 import java.util.List;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.RemoteViews;
 import android.widget.TextView;
 
-import com.olme.popupWindow.LoginTipPopWindow;
-import com.olme.activity.R;
-import com.olme.application.CustomApplication;
+
 
 /**
  * 页卡滑动切换监听
@@ -19,12 +13,9 @@ import com.olme.application.CustomApplication;
 public class MyOnPageChangeListener implements OnPageChangeListener {
 	private int currIndex = 0;// 当前页卡编号
 	private List<TextView> textviewList;
-    private CustomApplication app;
-    private List<Fragment> list;
 	
-	public MyOnPageChangeListener(List<Fragment> list,List<TextView> textviewList,
+	public MyOnPageChangeListener(List<TextView> textviewList,
 			int currIndex) {
-        this.list = list;
 		this.textviewList = textviewList;
 		this.currIndex = currIndex;
 	}

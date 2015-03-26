@@ -6,7 +6,6 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.view.ViewPager.LayoutParams;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
@@ -18,9 +17,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
-import org.androidannotations.annotations.EActivity;
+import com.olme.R;
 
 /**
  * Created by ye on 2014/8/21.
@@ -46,7 +44,7 @@ public class VedioPlayActivity extends Activity  {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);   //全屏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // 应用运行时，保持屏幕高亮，不锁屏
         init();  //初始化数据
-        url = "/sdcard/newfile/test.3gp";   //视频播放地址
+        url = "http://192.168.137.1:8080/wxc/vedios/example.3gp";   //视频播放地址
         setListener();   //绑定相关事件
     }
     private void init() {
@@ -83,7 +81,7 @@ public class VedioPlayActivity extends Activity  {
                 mediaPlayer.setDataSource(url);   //设置播放路径
                 mediaPlayer.setDisplay(pView.getHolder());  //把视频显示在SurfaceView上
                 mediaPlayer.setOnPreparedListener(new Ok(post));  //设置监听事件
-                mediaPlayer.prepare();  //准备播放
+                mediaPlayer.prepareAsync();  //准备播放
             } catch (Exception e) {
                 message.what = 2;
                 Log.e("hck", e.toString());

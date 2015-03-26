@@ -1,26 +1,23 @@
 package com.olme.api;
 
-import com.olme.domain.CourseInfo;
-import com.olme.domain.CourseType;
-import com.olme.domain.VedioInfo;
+import com.olme.domain.RestResult;
+import com.olme.tool.UrlUtil;
 
 import org.androidannotations.annotations.rest.Get;
 import org.androidannotations.annotations.rest.Rest;
+import org.androidannotations.api.rest.RestClientErrorHandling;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
-
-import java.util.List;
 
 /**
  * Created by wzy on 2014/8/16.
  */
-@Rest(rootUrl="http://10.0.2.2:8080/olme/course/",converters = GsonHttpMessageConverter.class)
-public interface CourseApi {
-    @Get("type")
-    List<CourseType> getCourseTypes();
+//@Rest(rootUrl="http://10.0.2.2:8080/olme/course/",converters = GsonHttpMessageConverter.class)
+@Rest(rootUrl = UrlUtil.root,converters = GsonHttpMessageConverter.class )
+public interface CourseApi extends RestClientErrorHandling {
+    @Get("tcourse/getAllTcourse?isAppLogin={isAppLogin}")
+    RestResult getAllTcourse(String isAppLogin);
 
-    @Get("findcourses/{courseTypeId}")
-    List<CourseInfo> getCourses(Integer courseTypeId);
+    @Get("vedio/getTVedioByTcourse?courseId={courseId}&&isAppLogin={isAppLogin}")
+    RestResult getTVedioByTcourse(Integer courseId, String isAppLogin);   //data: List<CourseInfo>
 
-    @Get("vedio/{chapterId}")
-    List<VedioInfo> getVedios(Integer chapterId);
 }

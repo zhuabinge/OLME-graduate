@@ -26,9 +26,9 @@
 
                 <ImageView
                     android:id="@+id/themeUserHeadPhoto"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/defalt_head" />
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/defalt_head"/>
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -36,23 +36,23 @@
                     android:layout_weight="1"
                     android:orientation="vertical"
                     android:paddingLeft="15dp"
-                    android:paddingTop="5dp">
+                    android:paddingTop="2dp">
 
                     <TextView
                         android:id="@+id/themeUserName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Bingo"
-                        android:textSize="16dp"
+                        android:textSize="12dp"
                         android:textColor="@color/black"/>
 
                     <TextView
                         android:id="@+id/themeDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingTop="6dp"
+                        android:paddingTop="4dp"
                         android:text="2014-08-15"
-                        android:textSize="13dp"
+                        android:textSize="10dp"
                         android:textColor="@color/black"/>
                 </LinearLayout>
             </LinearLayout>
@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="java怎么学"
-                android:textSize="15dp"
+                android:textSize="13dp"
                 android:textColor="@color/black"/>
         </LinearLayout>
 
@@ -89,22 +89,8 @@
                 android:ellipsize="end"
                 android:maxLines="4"
                 android:text="111111111"
-                android:textSize="15dp"
+                android:textSize="13dp"
                 android:textColor="@color/white"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/themeDetailImage"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:orientation="horizontal"
-            android:padding="5dp">
-            <ImageView
-                android:id="@+id/imagecontent"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/desktop" />
         </LinearLayout>
 
         <LinearLayout
@@ -120,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="评论："
-                android:textSize="15dp"
+                android:textSize="12dp"
                 android:textColor="@color/black"/>
 
             <TextView
@@ -128,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="5"
-                android:textSize="15dp"
+                android:textSize="12dp"
                 android:textColor="@color/black"/>
         </LinearLayout>
     </LinearLayout>
